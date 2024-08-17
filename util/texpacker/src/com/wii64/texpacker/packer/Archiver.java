@@ -2,6 +2,7 @@ package com.wii64.texpacker.packer;
 
 import com.wii64.texpacker.component.RiverLayout;
 import com.wii64.texpacker.util.Log;
+import io.github.pixee.security.ZipSecurity;
 import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -286,7 +287,7 @@ class Archiver extends JFrame {
                     textureFiles = new ArrayList<>();
                     fw = new RandomAccessFile(outputArchive, "rw");
                     initializePak();
-                    try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getTexturePath()))) {
+                    try (ZipInputStream zipInputStream = ZipSecurity.createHardenedInputStream(new FileInputStream(getTexturePath()))) {
                         ZipEntry zipEntry;
                         while ((zipEntry = zipInputStream.getNextEntry()) != null) {
                             getTextureFiles(zipInputStream, zipEntry);
